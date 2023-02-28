@@ -4214,6 +4214,12 @@ class AutoTestPlane(AutoTest):
         self.context_pop()
 
         self.reboot_sitl()
+    
+
+    def BallisticLanding(self):
+        '''test ballistic landing mode'''
+        self.change_mode('LDBA')
+
 
     def tests(self):
         '''return list of all tests'''
@@ -4297,6 +4303,7 @@ class AutoTestPlane(AutoTest):
             self.WindEstimates,
             self.AltResetBadGPS,
             self.AirspeedCal,
+            self.BallisticLanding,
         ])
         return ret
 
