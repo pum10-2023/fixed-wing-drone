@@ -53,6 +53,7 @@ public:
 #if HAL_QUADPLANE_ENABLED
         LOITER_ALT_QLAND = 25,
 #endif
+        LAND_BALLISTIC = 26,
     };
 
     // Constructor
@@ -287,6 +288,26 @@ public:
 protected:
 
     bool _enter() override;
+};
+
+class ModeLandBallistic: public Mode
+{
+public:
+    
+    Number mode_number() const override { return Number::LAND_BALLISTIC; }
+    const char *name() const override { return "Land Ballistic"; }
+    const char *name4() const override { return "LDBA"; }
+
+    void update() override;
+
+    void navigate() override;
+
+    bool does_auto_navigation() const override { return true; }
+
+    bool does_auto_throttle() const override { return true; }
+
+    bool handle_guided_request(Location target_loc) override;
+
 };
 
 class ModeLoiter : public Mode

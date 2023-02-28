@@ -134,6 +134,7 @@ public:
     friend class Tailsitter_Transition;
 
     friend class Mode;
+    friend class ModeLandBallistic;
     friend class ModeCircle;
     friend class ModeStabilize;
     friend class ModeTraining;
@@ -262,6 +263,8 @@ private:
     ModeAuto mode_auto;
     ModeRTL mode_rtl;
     ModeLoiter mode_loiter;
+    ModeLandBallistic mode_land_ballistic;
+
 #if HAL_ADSB_ENABLED
     ModeAvoidADSB mode_avoidADSB;
 #endif

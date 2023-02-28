@@ -90,6 +90,7 @@ void Plane::failsafe_short_on_event(enum failsafe_state fstype, ModeReason reaso
     case Mode::Number::CIRCLE:  // these modes never take any short failsafe action and continue
     case Mode::Number::TAKEOFF:
     case Mode::Number::RTL:
+    case Mode::Number::LAND_BALLISTIC:
 #if HAL_QUADPLANE_ENABLED
     case Mode::Number::QLAND:
     case Mode::Number::QRTL:
@@ -185,6 +186,7 @@ void Plane::failsafe_long_on_event(enum failsafe_state fstype, ModeReason reason
 #endif
     case Mode::Number::TAKEOFF:
     case Mode::Number::INITIALISING:
+    case Mode::Number::LAND_BALLISTIC:
         break;
     }
     gcs().send_text(MAV_SEVERITY_WARNING, "%s Failsafe On: %s", (reason == ModeReason:: GCS_FAILSAFE) ? "GCS" : "RC Long", control_mode->name());
