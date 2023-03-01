@@ -22,6 +22,12 @@ stages:
   - "build"
   - "test"
 
+setup:
+  stage: "build"
+  script:
+    - ./Tools/environment_install/install-prereqs-ubuntu.sh -y
+  when: manual
+
 build:
   stage: "build"
   script:
