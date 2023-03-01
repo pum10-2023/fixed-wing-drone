@@ -21,6 +21,7 @@ default:
 
 build and test:
   script:
-    - /Tools/autotest/arduplane.py build.Plane test.Plane.BallisticLanding --no-clean
+    - echo "$PWD"
+    - ./Tools/autotest/arduplane.py build.Plane test.Plane.BallisticLanding --no-clean
   rules:
     - if: $CI_PIPELINE_SOURCE == "push"
