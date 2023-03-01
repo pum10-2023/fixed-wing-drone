@@ -18,10 +18,18 @@
 default:
   tags:
       - python
+stages:
+  - "build"
+  - "test"
 
-build and test:
+build:
+  stage: "build"
   script:
-    - echo "$PWD"
+    - ./waf configure --board sitl
+    - ./waf plane
+
+
+test:
+  stage: "test"
+  script:
     - ./Tools/autotest/arduplane.py build.Plane test.Plane.BallisticLanding --no-clean
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "push"
