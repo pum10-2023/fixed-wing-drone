@@ -4218,7 +4218,7 @@ class AutoTestPlane(AutoTest):
 
     def BallisticLanding(self):
         '''test ballistic landing mode'''
-        self.change_mode('LDBA')
+        self.change_mode('LAND_BALLISTIC')
 
 
     def tests(self):
