@@ -25,6 +25,7 @@ stages:
 build:
   stage: "build"
   script:
+    - git submodule update --init --recursive
     - ./waf configure --board sitl
     - ./waf plane
 
