@@ -33,9 +33,10 @@ build:
   script:
     - ./waf configure --board sitl
     - ./waf plane
+  when: manual
 
 
 test:
   stage: "test"
   script:
-    - ./Tools/autotest/arduplane.py build.Plane test.Plane.BallisticLanding --no-clean
+    - ./Tools/autotest/ardutest.py build.Plane test.Plane.BallisticLanding --no-clean
