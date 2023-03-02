@@ -39,4 +39,4 @@ build:
 test:
   stage: "test"
   script:
-    - ./Tools/autotest/ardutest.py build.Plane test.Plane.BallisticLanding --no-clean
+    - ./Tools/autotest/autotest.py build.Plane test.Plane.BallisticLanding --no-clean
