@@ -19,11 +19,12 @@ default:
   tags:
       - python
 stages:
+  - "setup"
   - "build"
   - "test"
 
 setup:
-  stage: "build"
+  stage: "setup"
   script:
     - export DEBIAN_FRONTEND=noninteractive
     - ./Tools/environment_install/install-prereqs-ubuntu.sh -y
@@ -41,6 +42,7 @@ build:
     paths:
       - build/sitl
       - bin/arduplane
+  when: manual
 
 
 test:
