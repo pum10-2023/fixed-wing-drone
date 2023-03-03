@@ -34,11 +34,18 @@ build:
   script:
     - ./waf configure --board sitl
     - ./waf plane
-  when: manual
+  artifacts:
+    untracked: false
+    when: on_success
+    expire_in: 30 days
+    paths:
+      - build/sitl
+      - bin/arduplane
 
 
 test:
   stage: "test"
   script:
     - ./Tools/autotest/autotest.py build.Plane test.Plane.BallisticLanding --no-clean
-  when: manual
+  dependencies:
+    - build
