@@ -308,6 +308,8 @@ public:
 
     bool handle_guided_request(Location target_loc) override;
 
+protected:
+    bool _enter() override;
 };
 
 class ModeLoiter : public Mode
