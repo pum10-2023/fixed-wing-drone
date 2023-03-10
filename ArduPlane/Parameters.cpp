@@ -1251,6 +1251,12 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     AP_GROUPINFO("AUTOTUNE_AXES", 34, ParametersG2, axis_bitmask, 7),
 
 
+    // @Param: BALLISTIC_START_ALT
+    // @DisplayName: Ballistic start altitude
+    // @Description: Alltitude ballistic landing should start from
+    // @Range: 0 100000
+    // @User: Advanced
+    AP_GROUPINFO("BLAND_START_ALT", 35, ParametersG2, ballistic_target_allititude, 1500),
     
     AP_GROUPEND
 };
