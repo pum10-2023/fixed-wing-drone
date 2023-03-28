@@ -568,7 +568,7 @@ public:
     
     AP_Int8         axis_bitmask; // axes to be autotuned
 
-    AP_Int8         ballistic_target_allititude; // Alltidude from where to start ballistic landing
+    AP_Int32         ballistic_target_alt_cm; // Alltidude from where to start ballistic landing
 
     // just to make compilation easier when all things are compiled out...
     uint8_t unused_integer;

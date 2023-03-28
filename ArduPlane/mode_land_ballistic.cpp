@@ -1,12 +1,13 @@
 #include "mode.h"
 #include "Plane.h"
+#include "Parameters.h"
 
 bool ModeLandBallistic::_enter() {
    
     plane.do_loiter_at_location();
-    plane.next_WP_loc.set_alt_cm(15000, Location::AltFrame::ABOVE_TERRAIN);
 
-   return true;
+    plane.next_WP_loc.set_alt_cm(plane.g2.ballistic_target_alt_cm, Location::AltFrame::ABOVE_TERRAIN);
+    return true;
 }
 
 void ModeLandBallistic::update() {
