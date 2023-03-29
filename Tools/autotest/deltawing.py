@@ -26,7 +26,6 @@ class AutoTestDeltaWing(AutoTestPlane):
     def start_gazebo(self):
         self.progress("Starting Gazebo")
         self.gazebo = pexpect.spawn('gz sim -r -s zephyr_runway.sdf')
-        print(self.gazebo.read())
 
     def stop_gazebo(self):
         self.progress("Stopping Gazebo")
