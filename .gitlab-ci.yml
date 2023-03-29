@@ -48,6 +48,6 @@ build:
 test:
   stage: "test"
   script:
-    - ./Tools/autotest/autotest.py build.Plane test.Plane.BallisticLanding --no-clean
+    - ./Tools/autotest/autotest.py build.Parameters build.Plane test.DeltaWing --no-clean
   dependencies:
     - build
