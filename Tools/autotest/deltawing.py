@@ -75,22 +75,27 @@ class AutoTestDeltaWing(AutoTestPlane):
 
     def BallisticLanding(self):
         '''test ballistic landing mode'''
-        target_altitude = 1500
         self.takeoff()
-        self.set_parameter('BLAND_START_ALT', target_altitude)
+        
+        self.start_subtest("Set BLAND_START_ALT parameter")
+        target_altitude = 15
+        self.set_parameter('BLAND_START_ALT', target_altitude * 100)
+
+        self.start_subtest("Change mode to LAND_BALLISTIC")
         self.change_mode('LAND_BALLISTIC')
-        # self.wait_altitude(target_altitude - 5, target_altitude + 5, timeout=80)
+        here = self.mav.location()
+        print(here)
+        self.start_subtest("Circle down to altitude 15")
+        self.wait_altitude(target_altitude, target_altitude + 1, timeout=50, relative=True)
+        here = self.mav.location()
+        print(here)
         self.disarm_vehicle(force=True)
 
 
     def tests(self):
         '''return list of all tests'''
-        ret = AutoTest.tests(self)
-        ret.extend(
-            [
-                self.BallisticLanding
-            ]
-        )
-        return ret
+        return [
+            self.BallisticLanding
+        ]
 
     
