@@ -27,6 +27,7 @@ import arduplane
 import ardusub
 import antennatracker
 import quadplane
+import deltawing
 import balancebot
 import sailboat
 import helicopter
@@ -321,6 +322,7 @@ __bin_names = {
     "Tracker": "antennatracker",
     "Helicopter": "arducopter-heli",
     "QuadPlane": "arduplane",
+    "DeltaWing" : "arduplane",
     "Sub": "ardusub",
     "Blimp": "blimp",
     "BalanceBot": "ardurover",
@@ -390,6 +392,7 @@ tester_class_map = {
     "test.CopterTests2b": arducopter.AutoTestCopterTests2b, # 8m18s
     "test.Plane": arduplane.AutoTestPlane,
     "test.QuadPlane": quadplane.AutoTestQuadPlane,
+    "test.DeltaWing": deltawing.AutoTestDeltaWing,
     "test.Rover": rover.AutoTestRover,
     "test.BalanceBot": balancebot.AutoTestBalanceBot,
     "test.Sailboat": sailboat.AutoTestSailboat,

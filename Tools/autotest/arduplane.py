@@ -4214,14 +4214,6 @@ class AutoTestPlane(AutoTest):
         self.context_pop()
 
         self.reboot_sitl()
-    
-
-    def BallisticLanding(self):
-        '''test ballistic landing mode'''
-        target_altitude = 1500
-        self.set_parameter('BLAND_START_ALT', target_altitude)
-        self.change_mode('LAND_BALLISTIC')
-        self.wait_altitude(target_altitude - 5, target_altitude + 5, timeout=80)
 
 
     def tests(self):
@@ -4306,7 +4298,6 @@ class AutoTestPlane(AutoTest):
             self.WindEstimates,
             self.AltResetBadGPS,
             self.AirspeedCal,
-            self.BallisticLanding,
         ])
         return ret
 
