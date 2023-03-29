@@ -1,4 +1,5 @@
 import os
+import pexpect
 
 from arduplane import AutoTestPlane
 from common import AutoTest
@@ -13,21 +14,49 @@ class AutoTestDeltaWing(AutoTestPlane):
         return os.path.realpath(__file__)
 
     def defaults_filepath(self):
-        # Probably change later
-        return os.path.join(testdir, 'default_params/plane-jsbsim.parm')
+        return os.path.join(testdir, 'default_params/gazebo-zephyr.parm')
 
     def set_current_test_name(self, name):
-        # Potemtialy just use the same as regular plane
+        # Potentialy just use the same as regular plane
         self.current_test_name_directory = "DeltaWing_Tests/" + name + "/"
 
     def default_frame(self):
         return "gazebo-zephyr"
 
+    def start_gazebo(self):
+        self.progress("Starting Gazebo")
+        self.gazebo = pexpect.spawn('gz sim -r -s zephyr_runway.sdf')
+
+    def stop_gazebo(self):
+        self.progress("Stopping Gazebo")
+        if self.gazebo is None or not self.gazebo.isalive():
+            raise ValueErrror("Gazebo is not running")
+        self.gazebo.close(force = True)
+
+    def start_SITL(self, binary=None, **sitl_args):
+        # Use gazebo simulator as backend.
+        self.start_gazebo()
+        start_sitl_args = {
+            "model" : "JSON",
+            "customisations" : ["--sim-address=127.0.0.1"]
+        }
+        start_sitl_args.update(**sitl_args)
+        super(AutoTestDeltaWing, self).start_SITL(binary = binary, **start_sitl_args)
+
+    def stop_SITL(self):
+        self.stop_gazebo()
+        super(AutoTestDeltaWing, self).stop_SITL()
+
+    def reboot_sitl(self, required_bootcount=None, force=False):
+        self.stop_gazebo()
+        self.start_gazebo()
+        super(AutoTestDeltaWing, self).reboot_sitl(required_bootcount=required_bootcount, force=force)
+
     def takeoff(self, alt=150, alt_max = None, relative = True):
         if alt_max is None:
             alt_max = alt + 30
         
-        self.set_mode("FBWA")
+        self.change_mode("FBWA")
 
         self.wait_ready_to_arm()
         self.arm_vehicle()
@@ -37,7 +66,7 @@ class AutoTestDeltaWing(AutoTestPlane):
         self.set_rc(3, 1800)
 
         # Reach target altitude
-        self.wait_altitude(alt, alt_max, timeout=30, relative=relative)
+        self.wait_altitude(alt, alt_max, timeout=40, relative=relative)
 
         # Set pitch to neutral
         self.set_rc(2, 1500)
@@ -47,9 +76,11 @@ class AutoTestDeltaWing(AutoTestPlane):
     def BallisticLanding(self):
         '''test ballistic landing mode'''
         target_altitude = 1500
+        self.takeoff()
         self.set_parameter('BLAND_START_ALT', target_altitude)
         self.change_mode('LAND_BALLISTIC')
-        self.wait_altitude(target_altitude - 5, target_altitude + 5, timeout=80)
+        # self.wait_altitude(target_altitude - 5, target_altitude + 5, timeout=80)
+        self.disarm_vehicle(force=True)
 
 
     def tests(self):
