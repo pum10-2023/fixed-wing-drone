@@ -1083,6 +1083,7 @@ if __name__ == "__main__":
         'defaults.Plane',
         'test.Plane',
         'test.QuadPlane',
+        'test.DeltaWing',
 
         'build.Rover',
         'defaults.Rover',
