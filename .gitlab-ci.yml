@@ -48,6 +48,7 @@ build:
 test:
   stage: "test"
   script:
+    - source ~/.bashrc
     - ./Tools/autotest/autotest.py build.Parameters build.Plane test.DeltaWing --no-clean
   dependencies:
     - build
