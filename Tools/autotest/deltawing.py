@@ -2,7 +2,7 @@ import os
 import pexpect
 
 from arduplane import AutoTestPlane
-from common import AutoTest
+from common import AutoTest, NotAchievedException
 
 testdir = os.path.dirname(os.path.realpath(__file__))
 
@@ -36,6 +36,7 @@ class AutoTestDeltaWing(AutoTestPlane):
     def start_SITL(self, binary=None, **sitl_args):
         # Use gazebo simulator as backend.
         self.start_gazebo()
+        sitl_args["speedup"] = '1'
         start_sitl_args = {
             "model" : "JSON",
             "customisations" : ["--sim-address=127.0.0.1"]
@@ -75,7 +76,7 @@ class AutoTestDeltaWing(AutoTestPlane):
 
     def BallisticLanding(self):
         '''test ballistic landing mode'''
-        self.takeoff()
+        self.takeoff(alt = 100)
         
         self.start_subtest("Set BLAND_START_ALT parameter")
         target_altitude = 15
@@ -83,12 +84,14 @@ class AutoTestDeltaWing(AutoTestPlane):
 
         self.start_subtest("Change mode to LAND_BALLISTIC")
         self.change_mode('LAND_BALLISTIC')
-        here = self.mav.location()
-        print(here)
+        loc = self.mav.location()
         self.start_subtest("Circle down to altitude 15")
         self.wait_altitude(target_altitude, target_altitude + 1, timeout=50, relative=True)
         here = self.mav.location()
-        print(here)
+        dist = self.get_distance(loc, here)
+        self.progress("Distance traveled=%.1f" % dist)
+        if dist > 20:
+            raise NotAchievedException("Moved to far from initial position")
         self.disarm_vehicle(force=True)
 
 
