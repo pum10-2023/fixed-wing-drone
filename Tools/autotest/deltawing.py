@@ -6,6 +6,7 @@ from common import AutoTest, NotAchievedException
 
 testdir = os.path.dirname(os.path.realpath(__file__))
 
+
 class AutoTestDeltaWing(AutoTestPlane):
     def log_name(self):
         return "DeltaWing"
@@ -30,19 +31,20 @@ class AutoTestDeltaWing(AutoTestPlane):
     def stop_gazebo(self):
         self.progress("Stopping Gazebo")
         if self.gazebo is None or not self.gazebo.isalive():
-            raise ValueErrror("Gazebo is not running")
+            raise ValueError("Gazebo is not running")
         self.gazebo.close(force = True)
 
     def start_SITL(self, binary=None, **sitl_args):
         # Use gazebo simulator as backend.
         self.start_gazebo()
         sitl_args["speedup"] = '1'
-        start_sitl_args = {
-            "model" : "JSON",
-            "customisations" : ["--sim-address=127.0.0.1"]
-        }
-        start_sitl_args.update(**sitl_args)
-        super(AutoTestDeltaWing, self).start_SITL(binary = binary, **start_sitl_args)
+        if "model" in sitl_args:
+            if sitl_args["model"] != "JSON":
+                raise ValueError("DeltaWing model must be JSON")
+        else:
+            sitl_args["model"] = 'JSON'
+        sitl_args["customisations"] = ["--sim-address=127.0.0.1"]
+        super(AutoTestDeltaWing, self).start_SITL(binary = binary, **sitl_args)
 
     def stop_SITL(self):
         self.stop_gazebo()
@@ -92,13 +94,11 @@ class AutoTestDeltaWing(AutoTestPlane):
         self.progress("Distance traveled=%.1f" % dist)
         if dist > 20:
             raise NotAchievedException("Moved to far from initial position")
-        self.disarm_vehicle(force=True)
 
+        self.disarm_vehicle(force=True)
 
     def tests(self):
         '''return list of all tests'''
         return [
             self.BallisticLanding
         ]
-
-    
