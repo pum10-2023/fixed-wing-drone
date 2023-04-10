@@ -165,7 +165,7 @@
  # define PITCH_MAX                              20
 #endif
 #ifndef PITCH_MIN
- # define PITCH_MIN                              -25
+ # define PITCH_MIN                              -90
 #endif
 #define HEAD_MAX_CENTIDEGREE HEAD_MAX * 100
 #define PITCH_MAX_CENTIDEGREE PITCH_MAX * 100
