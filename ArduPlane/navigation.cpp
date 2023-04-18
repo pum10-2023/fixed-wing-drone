@@ -202,7 +202,8 @@ void Plane::calc_airspeed_errors()
         }
 
 #endif // OFFBOARD_GUIDED == ENABLED
-
+    } else if (control_mode == &mode_land_ballistic && mode_land_ballistic.nose_dive) {
+        target_airspeed_cm = 0;
 #if HAL_SOARING_ENABLED
     } else if (g2.soaring_controller.is_active() && g2.soaring_controller.get_throttle_suppressed()) {
         if (control_mode == &mode_thermal) {
@@ -264,9 +265,11 @@ void Plane::calc_airspeed_errors()
         target_airspeed_cm += airspeed_nudge_cm;
     }
 
-    // Apply airspeed limit
-    target_airspeed_cm = constrain_int32(target_airspeed_cm, aparm.airspeed_min*100, aparm.airspeed_max*100);
-
+    
+    if (control_mode != &mode_land_ballistic || !mode_land_ballistic.nose_dive) { 
+        // Apply airspeed limit
+        target_airspeed_cm = constrain_int32(target_airspeed_cm, aparm.airspeed_min*100, aparm.airspeed_max*100);
+    }
     // use the TECS view of the target airspeed for reporting, to take
     // account of the landing speed
     airspeed_error = TECS_controller.get_target_airspeed() - airspeed_measured;

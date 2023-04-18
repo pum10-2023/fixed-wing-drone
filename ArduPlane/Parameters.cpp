@@ -1257,7 +1257,7 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     // @Range: 0 100000
     // @Units: m
     // @User: Advanced
-    AP_GROUPINFO("BLAND_START_ALT", 35, ParametersG2, ballistic_target_alt_cm, 1500),
+    AP_GROUPINFO("BLAND_START_ALT", 35, ParametersG2, ballistic_target_alt_cm, 10000),
     
     AP_GROUPEND
 };
