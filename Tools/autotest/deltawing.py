@@ -24,11 +24,9 @@ class AutoTestDeltaWing(AutoTestPlane):
         return "gazebo-ssrs"
 
     def start_gazebo(self):
-        #self.progress("Starting Gazebo")
         self.gazebo = pexpect.spawn('gz sim -r -s ssrs_runway.sdf')
 
     def stop_gazebo(self):
-        #self.progress("Stopping Gazebo")
         if self.gazebo is None or not self.gazebo.isalive():
             raise ValueErrror("Gazebo is not running")
         self.gazebo.close(force = True)

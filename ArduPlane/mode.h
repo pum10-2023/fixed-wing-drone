@@ -308,8 +308,7 @@ public:
 
     bool handle_guided_request(Location target_loc) override;
 
-protected: 
-
+protected:
     bool _enter() override;
 
 };
