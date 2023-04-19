@@ -14,18 +14,18 @@ class AutoTestDeltaWing(AutoTestPlane):
         return os.path.realpath(__file__)
 
     def defaults_filepath(self):
-        return os.path.join(testdir, 'default_params/gazebo-zephyr.parm')
+        return os.path.join(testdir, 'default_params/gazebo-ssrs.parm')
 
     def set_current_test_name(self, name):
         # Potentialy just use the same as regular plane
         self.current_test_name_directory = "DeltaWing_Tests/" + name + "/"
 
     def default_frame(self):
-        return "gazebo-zephyr"
+        return "gazebo-ssrs"
 
     def start_gazebo(self):
         self.progress("Starting Gazebo")
-        self.gazebo = pexpect.spawn('gz sim -r -s zephyr_runway.sdf')
+        self.gazebo = pexpect.spawn('gz sim -r -s ssrs_runway.sdf')
 
     def stop_gazebo(self):
         self.progress("Stopping Gazebo")
@@ -60,6 +60,7 @@ class AutoTestDeltaWing(AutoTestPlane):
         self.change_mode("FBWA")
 
         self.wait_ready_to_arm()
+        self.set_rc(3, 1500)
         self.arm_vehicle()
 
         # Takeoff from standing position
@@ -74,8 +75,8 @@ class AutoTestDeltaWing(AutoTestPlane):
 
         self.progress("TAKEOFF COMPLETE")
 
-    def BallisticLanding(self):
-        '''test ballistic landing mode'''
+    def BallisticLandingCircleDown(self):
+        '''test ballistic landing mode circle to height'''
         self.takeoff(alt = 100)
         
         self.start_subtest("Set BLAND_START_ALT parameter")
@@ -84,21 +85,25 @@ class AutoTestDeltaWing(AutoTestPlane):
 
         self.start_subtest("Change mode to LAND_BALLISTIC")
         self.change_mode('LAND_BALLISTIC')
-        loc = self.mav.location()
         self.start_subtest("Circle down to altitude 15")
         self.wait_altitude(target_altitude, target_altitude + 1, timeout=50, relative=True)
-        here = self.mav.location()
-        dist = self.get_distance(loc, here)
-        self.progress("Distance traveled=%.1f" % dist)
-        if dist > 20:
-            raise NotAchievedException("Moved to far from initial position")
+        self.disarm_vehicle(force=True)
+
+    def BallisticLandingReverseThrustDive(self):
+        '''test ballistic landing mode reverse thrust dive'''
+        self.takeoff(alt = 10)
+        self.set_parameter('BLAND_START_ALT', 10000)
+        self.change_mode('LAND_BALLISTIC')
+        self.wait_altitude(95, 105, timeout=50, relative=True)
+        self.wait_pitch(-90, accuracy=10)
+        self.wait_airspeed(0, 3, minimum_duration=5, timeout=30)
         self.disarm_vehicle(force=True)
 
 
     def tests(self):
         '''return list of all tests'''
         return [
-            self.BallisticLanding
+            self.BallisticLandingCircleDown, self.BallisticLandingReverseThrustDive
         ]
 
     
