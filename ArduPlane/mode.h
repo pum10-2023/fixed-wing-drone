@@ -290,13 +290,11 @@ protected:
     bool _enter() override;
 };
 
-class ModeLandBallistic: public Mode
-{
+class ModeLandBallistic : public Mode {
 public:
-    
     Number mode_number() const override { return Number::LAND_BALLISTIC; }
-    const char *name() const override { return "Land Ballistic"; }
-    const char *name4() const override { return "LDBA"; }
+    const char* name() const override { return "Land Ballistic"; }
+    const char* name4() const override { return "LDBA"; }
 
     void update() override;
 
@@ -310,7 +308,6 @@ public:
 
 protected:
     bool _enter() override;
-
 };
 
 class ModeLoiter : public Mode
