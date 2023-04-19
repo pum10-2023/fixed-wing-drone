@@ -24,11 +24,11 @@ class AutoTestDeltaWing(AutoTestPlane):
         return "gazebo-ssrs"
 
     def start_gazebo(self):
-        self.progress("Starting Gazebo")
+        #self.progress("Starting Gazebo")
         self.gazebo = pexpect.spawn('gz sim -r -s ssrs_runway.sdf')
 
     def stop_gazebo(self):
-        self.progress("Stopping Gazebo")
+        #self.progress("Stopping Gazebo")
         if self.gazebo is None or not self.gazebo.isalive():
             raise ValueErrror("Gazebo is not running")
         self.gazebo.close(force = True)
@@ -45,8 +45,9 @@ class AutoTestDeltaWing(AutoTestPlane):
         super(AutoTestDeltaWing, self).start_SITL(binary = binary, **start_sitl_args)
 
     def stop_SITL(self):
-        self.stop_gazebo()
         super(AutoTestDeltaWing, self).stop_SITL()
+        self.stop_gazebo()
+
 
     def reboot_sitl(self, required_bootcount=None, force=False):
         self.stop_gazebo()
@@ -77,7 +78,7 @@ class AutoTestDeltaWing(AutoTestPlane):
 
     def BallisticLandingCircleDown(self):
         '''test ballistic landing mode circle to height'''
-        self.takeoff(alt = 100)
+        self.takeoff(alt = 50)
         
         self.start_subtest("Set BLAND_START_ALT parameter")
         target_altitude = 15
