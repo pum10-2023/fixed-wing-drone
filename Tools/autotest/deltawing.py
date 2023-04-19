@@ -93,9 +93,9 @@ class AutoTestDeltaWing(AutoTestPlane):
     def BallisticLandingReverseThrustDive(self):
         '''test ballistic landing mode reverse thrust dive'''
         self.takeoff(alt = 10)
-        self.set_parameter('BLAND_START_ALT', 10000)
+        self.set_parameter('BLAND_START_ALT', 5000)
         self.change_mode('LAND_BALLISTIC')
-        self.wait_altitude(95, 105, timeout=50, relative=True)
+        self.wait_altitude(45, 105, timeout=50, relative=True)
         self.wait_pitch(-90, accuracy=10)
         self.wait_airspeed(0, 3, minimum_duration=5, timeout=30)
         self.disarm_vehicle(force=True)

@@ -27,7 +27,6 @@ void ModeLandBallistic::update() {
         } 
 
         const float thrust = ((target_alt - alt) /  target_alt) * plane.g2.ballistic_reverse_thrust;
-        gcs().send_text(MAV_SEVERITY::MAV_SEVERITY_DEBUG, "Thrust: %f, Alt: %f", thrust, alt);
         SRV_Channels::set_output_scaled(SRV_Channel::k_throttle, -thrust);
     } else {
         plane.calc_nav_pitch();
