@@ -7,22 +7,28 @@ bool ModeLandBallistic::_enter() {
     plane.do_loiter_at_location();
 
     plane.next_WP_loc.set_alt_cm(plane.g2.ballistic_target_alt_cm, Location::AltFrame::ABOVE_TERRAIN);
+    plane.set_flight_stage(AP_FixedWing::FlightStage::NORMAL);
     return true;
 }
 
 void ModeLandBallistic::update() {
     
-    if (plane.adjusted_relative_altitude_cm() >= plane.g2.ballistic_target_alt_cm - 500
-     && plane.adjusted_relative_altitude_cm() < plane.g2.ballistic_target_alt_cm) {
-        nose_dive = true;
+    const float alt = plane.adjusted_relative_altitude_cm();
+    const float target_alt = plane.g2.ballistic_target_alt_cm.get();
+
+    if (alt >= target_alt - 500 && alt < target_alt) {
+        plane.set_flight_stage(AP_FixedWing::FlightStage::LAND_BALLISTIC);
     } 
 
-    if(nose_dive) {
+    if(plane.flight_stage == AP_FixedWing::FlightStage::LAND_BALLISTIC) {
         if (plane.nav_pitch_cd != -9000){
             plane.nav_pitch_cd = -9000;
             plane.nav_roll_cd = 0;
         } 
-        SRV_Channels::set_output_scaled(SRV_Channel::k_throttle, -31.125);
+
+        const float thrust = ((target_alt - alt) /  target_alt) * plane.g2.ballistic_reverse_thrust;
+        gcs().send_text(MAV_SEVERITY::MAV_SEVERITY_DEBUG, "Thrust: %f, Alt: %f", thrust, alt);
+        SRV_Channels::set_output_scaled(SRV_Channel::k_throttle, -thrust);
     } else {
         plane.calc_nav_pitch();
         plane.calc_nav_roll();
@@ -31,7 +37,7 @@ void ModeLandBallistic::update() {
 }
 
 void ModeLandBallistic::navigate() {
-    if (!nose_dive) {
+    if (plane.flight_stage != AP_FixedWing::FlightStage::LAND_BALLISTIC) {
         plane.update_loiter(8);
     }
 }

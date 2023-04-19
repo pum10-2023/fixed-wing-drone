@@ -308,7 +308,6 @@ public:
 
     bool handle_guided_request(Location target_loc) override;
 
-    bool nose_dive = false;
 protected: 
 
     bool _enter() override;
