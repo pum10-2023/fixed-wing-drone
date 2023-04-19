@@ -49,6 +49,7 @@ test:
   stage: "test"
   script:
     - source ~/.bashrc
+    - export GZ_SIM_RESOURCE_PATH=$HOME/ardupilot_gazebo/models:$HOME/ardupilot_gazebo/worlds:$PWD/gazebo/models:$PWD/gazebo/worlds:${GZ_SIM_RESOURCE_PATH}
     - ./Tools/autotest/autotest.py build.Parameters build.Plane test.DeltaWing --no-clean
   dependencies:
     - build
