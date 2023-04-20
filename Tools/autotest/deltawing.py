@@ -28,7 +28,7 @@ class AutoTestDeltaWing(AutoTestPlane):
 
     def stop_gazebo(self):
         if self.gazebo is None or not self.gazebo.isalive():
-            raise ValueErrror("Gazebo is not running")
+            raise ValueError("Gazebo is not running")
         self.gazebo.close(force = True)
 
     def start_SITL(self, binary=None, **sitl_args):
@@ -94,6 +94,7 @@ class AutoTestDeltaWing(AutoTestPlane):
         self.set_parameter('BLAND_START_ALT', 5000)
         self.change_mode('LAND_BALLISTIC')
         self.wait_altitude(45, 105, timeout=50, relative=True)
+        # Check that the plane dives with pitch -90 degrees and slows down with reverse thrust
         self.wait_pitch(-90, accuracy=10)
         self.wait_airspeed(0, 3, minimum_duration=5, timeout=30)
         self.disarm_vehicle(force=True)
@@ -102,7 +103,8 @@ class AutoTestDeltaWing(AutoTestPlane):
     def tests(self):
         '''return list of all tests'''
         return [
-            self.BallisticLandingCircleDown, self.BallisticLandingReverseThrustDive
+            self.BallisticLandingCircleDown,
+            self.BallisticLandingReverseThrustDive
         ]
 
     

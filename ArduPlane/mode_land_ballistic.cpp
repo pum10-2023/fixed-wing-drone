@@ -6,6 +6,7 @@
 bool ModeLandBallistic::_enter()
 {
 
+    // Circle down to target altitude of the landing by loitering to a wp at the altitude
     plane.do_loiter_at_location();
 
     plane.next_WP_loc.set_alt_cm(plane.g2.ballistic_target_alt_cm, Location::AltFrame::ABOVE_TERRAIN);
