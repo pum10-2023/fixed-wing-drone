@@ -1,6 +1,5 @@
 #include "mode.h"
 #include "Plane.h"
-#include "Parameters.h"
 
 
 bool ModeLandBallistic::_enter()
