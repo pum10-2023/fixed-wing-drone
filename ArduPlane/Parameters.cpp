@@ -1257,7 +1257,15 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     // @Range: 0 100000
     // @Units: m
     // @User: Advanced
-    AP_GROUPINFO("BLAND_START_ALT", 35, ParametersG2, ballistic_target_alt_cm, 1500),
+    AP_GROUPINFO("BLAND_START_ALT", 35, ParametersG2, ballistic_target_alt_cm, 10000),
+
+    // @Param: BALLISTIC_START_ALT
+    // @DisplayName: Ballistic reverse thrust
+    // @Description: Percentage of reverse thrust ballistic landing should use.
+    // @Range: 0 100
+    // @Units: %
+    // @User: Advanced
+    AP_GROUPINFO("BLAND_REV_THR", 36, ParametersG2, ballistic_reverse_thrust, 31.125),
     
     AP_GROUPEND
 };

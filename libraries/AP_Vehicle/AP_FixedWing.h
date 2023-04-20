@@ -46,6 +46,7 @@ struct AP_FixedWing {
         VTOL          = 2,
         NORMAL        = 3,
         LAND          = 4,
-        ABORT_LANDING = 7
+        ABORT_LANDING = 7,
+        LAND_BALLISTIC = 8,
     };
 };

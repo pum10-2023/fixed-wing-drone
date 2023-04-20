@@ -102,6 +102,10 @@ bool Plane::allow_reverse_thrust(void) const
     case Mode::Number::THERMAL:
         allow |= (g.use_reverse_thrust & USE_REVERSE_THRUST_THERMAL);
         break;
+    case Mode::Number::LAND_BALLISTIC:
+        // LAND_BALLISTIC requires reverse thrust to work
+        allow = true;
+        break;
     default:
         // all other control_modes allow independent of mask(MANUAL)
         allow = true;
